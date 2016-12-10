@@ -14,6 +14,12 @@
 
 class UselessNLMsg{
 public:
+	UselessNLMsg(uint16_t type, std::string &str){
+		data_allocated=false;
+		this->type=type;
+		data=(char *)str.data();
+		data_len=str.length();
+	}
 	UselessNLMsg(uint16_t type){
 		data_allocated=false;
 		this->type=type;
