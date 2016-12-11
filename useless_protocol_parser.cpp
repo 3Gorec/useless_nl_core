@@ -32,7 +32,7 @@ int UselessProtocolParser::ParseMsg(std::string &src_data, std::list<std::string
 	int msg_len=src_data.length();
 	uint32_t cur_strlen=0;
 	int offset=0;
-
+	result_strings.clear();
 	if(msg_len>NL_MAX_PAYLOAD){
 		ret=1;
 	}
