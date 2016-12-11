@@ -70,7 +70,6 @@ int UselessProtocolParser::PrepareStr(std::string &str, std::string &prepared_st
 int UselessProtocolParser::ParseStr(std::string &str, std::string &parsed_str){
 	int ret=0;
 	int cur_strlen=*((uint32_t *)(str.data()));
-	printf("len=%d\n",cur_strlen);
 	if(cur_strlen<=NL_MAX_STR_LEN){
 		parsed_str.assign(str.data()+sizeof(cur_strlen),cur_strlen);
 		ret=0;
