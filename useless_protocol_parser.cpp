@@ -79,7 +79,7 @@ int UselessProtocolParser::ParseStr(std::string &str, std::string &parsed_str){
 
 int UselessProtocolParser::WithdrawPid(std::string &msg){
 	uint32_t pid=0;
-	if(msg.length()>sizeof(pid)){
+	if(msg.length()>=sizeof(pid)){
 		pid=*((uint32_t *)msg.data());
 		msg.erase(0,sizeof(pid));
 	}
