@@ -15,6 +15,8 @@ class UselessProtocolParser{
 public:
 	static int PrepareMsgData(std::list<std::string> &src_strings, std::string &result_data);
 	static int ParseMsg(std::string &src_data, std::list<std::string> &result_strings);
+	static int PrepareStr(std::string &str, std::string &prepared_str);
+	static int ParseStr(std::string &str, std::string &parsed_str);
 	static int WithdrawPid(std::string &msg);
 	static int InjectPid(std::string &msg, uint32_t pid);
 private:

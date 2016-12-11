@@ -17,9 +17,9 @@ int UselessProtocolParser::PrepareMsgData(std::list<std::string> &src_strings, s
 			ret=1;
 			break;
 		}
-		uint32_t str_len=(uint32_t)it.length();
-		result_data.append((char*)&str_len,sizeof(str_len));
-		result_data.append(it);
+		std::string prepared_str;
+		PrepareStr(it,prepared_str);
+		result_data.append(prepared_str);
 	}
 	if(result_data.length()>NL_MAX_PAYLOAD){
 		ret=1;
@@ -51,6 +51,29 @@ int UselessProtocolParser::ParseMsg(std::string &src_data, std::list<std::string
 
 	if(offset>msg_len){
 		ret=1;
+	}
+	return ret;
+}
+
+int UselessProtocolParser::PrepareStr(std::string &str, std::string &prepared_str){
+	int ret=0;
+	uint32_t str_len=(uint32_t)str.length();
+	prepared_str.clear();
+	prepared_str.append((char*)&str_len,sizeof(str_len));
+	prepared_str.append(str);
+	if(prepared_str.length()>NL_MAX_PAYLOAD){
+		ret=1;
+	}
+	return ret;
+}
+
+int UselessProtocolParser::ParseStr(std::string &str, std::string &parsed_str){
+	int ret=0;
+	int cur_strlen=*((uint32_t *)(str.data()));
+	printf("len=%d\n",cur_strlen);
+	if(cur_strlen<=NL_MAX_STR_LEN){
+		parsed_str.assign(str.data()+sizeof(cur_strlen),cur_strlen);
+		ret=0;
 	}
 	return ret;
 }
