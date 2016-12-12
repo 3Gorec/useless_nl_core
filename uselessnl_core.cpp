@@ -69,7 +69,7 @@ int UselessNLCore::SendMsg(UselessNLMsg &useless_msg){
 	nlh = (struct nlmsghdr *) ::operator new(NLMSG_SPACE(useless_msg.data_len));
 
 	memset(nlh, 0, NLMSG_SPACE(useless_msg.data_len));
-	nlh->nlmsg_len = NLMSG_SPACE(useless_msg.data_len);
+	nlh->nlmsg_len = NLMSG_LENGTH(useless_msg.data_len);
 	nlh->nlmsg_pid = thread_addr.pid;
 	nlh->nlmsg_flags = 0;
 	nlh->nlmsg_type=useless_msg.type;
@@ -109,7 +109,7 @@ int UselessNLCore::RecvMsg(UselessNLMsg &useless_msg){
 	nlh = (struct nlmsghdr *)::operator new(NLMSG_SPACE(NL_MAX_PAYLOAD));
 
 	memset(nlh, 0, NLMSG_SPACE(NL_MAX_PAYLOAD));
-	nlh->nlmsg_len = NLMSG_SPACE(NL_MAX_PAYLOAD);
+	nlh->nlmsg_len = NLMSG_LENGTH(NL_MAX_PAYLOAD);
 	nlh->nlmsg_pid = thread_addr.pid;
 	nlh->nlmsg_flags = 0;
 
@@ -125,7 +125,7 @@ int UselessNLCore::RecvMsg(UselessNLMsg &useless_msg){
 	/* Read message from kernel */
 	ret=recvmsg(thread_addr.sock_fd, &msg, 0);
 	if(ret!=-1){
-		useless_msg.data_len=nlh->nlmsg_len-NLMSG_HDRLEN;
+		useless_msg.data_len=NLMSG_PAYLOAD(nlh,0);
 		useless_msg.type=nlh->nlmsg_type;
 		if(ret>0 && useless_msg.data && useless_msg.data_len>0){
 			memcpy(useless_msg.data,NLMSG_DATA(nlh),useless_msg.data_len);
